@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Task Planner</title>
+
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+
+    <body>
+        <header>
+            <h1>Task Planner</h1>
+            <button id="dash">Add</button>
+        </header>
+        
+        <div id = "page">
+
+            <div id="addTaskContainer">
+                <label for="taskId">Task ID</label>
+                <input type="text" id="taskId" placeholder="123">
+                <span class="error" id="taskIdError"></span>
+
+                <label for="taskName">Task Name</label>
+                <input type="text" id="taskName" placeholder="eg. Complete Homework">
+                <span class="error" id="taskNameError"></span>
+
+                <label for="start-date">Start Date</label>
+                <input type="date" id="start-date">
+                <span class="error" id="startDateError"></span>
+
+                <label for="end-date">End Date</label>
+                <input type="date" id="end-date">
+                <span class="error" id="endDateError"></span>
+
+                <label for="status">Status</label>
+                <select id="status">
+                </select>
+                <span class="error" id="statusError"></span>
+
+                <button id="addTaskButton">Add Task</button>
+            </div>
+            <div id="tableContainer">
+                <table id="taskTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">Task ID</th>
+                            <th style="width: 40%;">Task Name</th>
+                            <th style="width: 11%;">Start-Date</th>
+                            <th style="width: 11%;">End-Date</th>
+                            <th style="width: 11%;">Status</th>
+                            <th style="width: 11%;">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table-body">
+                        <!-- <tr>
+                            <td>1</td>
+                            <td>Complete Homework</td>
+                            <td>12-12-2012</td>
+                            <td>12-12-2012</td>
+                            <td>Pending</td>
+                            <td><button>E</button> <button>D</button></td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script src="app.js">    
+           
+        </script>
+
+    </body>
+
+</html>
