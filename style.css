@@ -16,8 +16,25 @@ body{
 }
 
 header{
-    padding: 10px;
-    border: 1px solid black;
+    padding: 20px;
+    color: white;
+    background-color: #28282B;
+    box-shadow: 5px 5px 10px black;
+    font-size: 2em;
+}
+
+.dashButton{
+    width: 40px; 
+    height: 40px; 
+    background-color: #28282B; 
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.dashButton:hover{
+    background-color: white;
+    color: black;
 }
 
 /* CSS FOR ADD TASK SECTION */
@@ -109,7 +126,7 @@ label{
 /* CSS FOR SHOW TABLE SECTION */
 #taskTable{
     width: 96%;
-    margin: 50px 20px 100px 20px;
+    margin: 20px 20px 100px 20px;
     background-color: white;
     box-shadow: 1px 1px 3px;
     border-collapse: collapse;

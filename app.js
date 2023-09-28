@@ -82,6 +82,18 @@ let taskList = [];
 taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
 taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
 taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
+taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
+taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
+taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
+taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
+taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
+taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
+taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
+taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
+taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
+taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
+taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
+taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
 
 // taskList.push(new Task(8,"Play Football","2015-03-25","2015-03-26","completed"));
 
@@ -588,6 +600,20 @@ function addTask()
 const addTaskButton = document.getElementById("addTaskButton");
 addTaskButton.addEventListener("click",addTask);
 
+// event listner to display or close
+const dashButton = document.querySelector(".dashButton");
+
+dashButton.addEventListener("click",sideBar);
+
+function sideBar()
+{
+    const element = document.getElementById("addTaskContainer");
+    
+    if(element.style.display == "flex")
+        element.style.display = "none";
+    else
+        element.style.display = "flex";
+}
 
 // 
 
