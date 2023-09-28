@@ -2,6 +2,9 @@
 const idRecord = {};
 
 // for testing
+idRecord['1'] = null;
+idRecord['2'] = null;
+idRecord['3'] = null;
 
 console.log(idRecord);
 
@@ -76,18 +79,9 @@ class Task
 // array to instances/objects of Task class
 let taskList = [];
 
-taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(2,"Play Football","2015-03-25","2015-03-26","completed"));
+taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
+taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
 taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(4,"Play Football","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(5,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(6,"Play Football","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(7,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(8,"Play Football","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(9,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(10,"Play Football","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(11,"Play Football","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(12,"Play Basketball","2015-03-25","2015-03-26","pending"));
 
 // taskList.push(new Task(8,"Play Football","2015-03-25","2015-03-26","completed"));
 
@@ -366,7 +360,7 @@ function showData()
         row.appendChild(cell);
 
         cell = document.createElement("td");
-        cell.innerHTML = `<button class = "fa fa-edit" style="width:25px; height:25px;"></button> <button style="width:25px; height:25px;" class = "fa fa-trash" onclick="deleteTask(${taskList[i].taskId})"></button>`;
+        cell.innerHTML = `<button class = "fa fa-edit" style="width:25px; height:25px;" onclick="updateTaskUi(${taskList[i].taskId})"></button> <button style="width:25px; height:25px;" class = "fa fa-trash" onclick="deleteTask(${taskList[i].taskId})"></button>`;
         row.appendChild(cell);
 
         tbody.appendChild(row);
@@ -388,11 +382,168 @@ function deleteTask(id)
     showData();
 }
 
-showData();
+// function to update/edit task
+function updateTaskUi(id)
+{
+    clearErrors(); // errors will be refressed
+
+    let taskToBeUpdated;
+    taskList.forEach(task => {
+        if(task.taskId == id)
+            taskToBeUpdated = task;
+    });
+
+    console.log(taskToBeUpdated);
+
+    let taskId,taskName,startDate,endDate,status;
+
+    taskId = document.getElementById("taskId");
+    taskName = document.getElementById("taskName");
+    startDate = document.getElementById("start-date");
+    endDate = document.getElementById("end-date");
+    status = document.getElementById("status");
+
+    let t = taskToBeUpdated;
+    let year;
+    let date;
+    let month;
+
+    // console.log(`${t._startDate.getDate()}`.length);
+    // HERE ID NAME START DATE AND END DATE ARE DISPLAYED WHEN EDIT BUTTON IS CLICKED (bit of complicated)
+    if(`${t._startDate.getDate()}`.length === 1)
+        date = "0"+t._startDate.getDate();
+    else
+        date = t._startDate.getDate();
+
+    if(`${t._startDate.getMonth()}`.length === 1)
+        month = "0"+t._startDate.getMonth();
+    else
+        month = t._startDate.getMonth();
+
+    year = t._startDate.getFullYear();
+    let s = `${year}-${month}-${date}`;
+    console.log(s);
+    startDate.value = s;
+
+
+    if(`${t._endDate.getDate()}`.length === 1)
+        date = "0"+t._endDate.getDate();
+    else
+        date = t._endDate.getDate();
+
+    if(`${t._endDate.getMonth()}`.length === 1)
+        month = "0"+t._endDate.getMonth();
+    else
+        month = t._endDate.getMonth();
+
+    year = t._startDate.getFullYear();
+    let e = `${year}-${month}-${date}`;
+    console.log(e);
+    endDate.value = e;
+
+    taskId.value = taskToBeUpdated.taskId;
+    taskName.value = taskToBeUpdated.taskName;
+
+    status.value = taskToBeUpdated.status.toUpperCase();
+
+    setSelectElements(startDate,endDate);
+
+    // here we will change the ui to make it for update
+    const div = document.getElementById("actionButtons");
+    div.innerHTML = `<button class = "editBtn" onClick = "updateTask(${id})">Update</button><button class = "editBtn" onClick = "cancelUpdate()">Cancel</button>`;
+}
+
+// This function will be invoked when update is cancelled
+function cancelUpdate()
+{
+    const div = document.getElementById("actionButtons");
+    div.innerHTML = `<button id = "addTaskButton" onClick = "addTask()">Add Task</button>`;
+
+    // sets all input fields to null
+    const taskId = document.getElementById("taskId");
+    const taskName = document.getElementById("taskName");
+    const startDate = document.getElementById("start-date");
+    const endDate = document.getElementById("end-date");
+    const status = document.getElementById("status");
+    taskId.value = taskName.value = startDate.value = endDate.value = status.value = null;
+
+    // Clears all errors while cancelling the update of task
+    clearErrors();
+};
+
+// This function will be invoked when update button is clicked (will perform validation and updates task)
+function updateTask(id)
+{
+    // errors  will be refressed every time update button is clicked
+    clearErrors();
+    let taskId = document.getElementById("taskId");
+    let taskName = document.getElementById("taskName");
+    let startDate = document.getElementById("start-date");
+    let endDate = document.getElementById("end-date");
+    let status = document.getElementById("status");
+
+    // validation of empty field
+    checkEmptyField(taskId,taskName,startDate,endDate,status);
+    // validation of task name
+    checkTaskName(taskName);
+
+    // validation of taskId
+    if(id != taskId.value)
+    {
+        if(taskId.value in idRecord)
+            setIdError("Entered Task ID is alerady used");                
+    }
+
+    let flag = true;
+    // checks whether every error message is blank or not. if all are blanks means no error then flag will be true
+    const errors = document.getElementsByClassName("error");
+    for(let i = 0; i < errors.length; i++)
+    {
+        if(errors[i].innerText != "")
+            flag = false;
+    
+    }
+    
+    if(flag)
+    {
+        // so new all validations are done
+        // (IMP) we have to check whether new id assiged or not to task, if new id is assigned then we have to delete previous id and add this new id to id record table 
+        if(id != taskId.value)
+        {
+            delete idRecord[id];
+        }
+
+        idRecord[taskId.value] = null;
+
+        for(let i = 0; i < taskList.length; i++)
+        {
+            if(taskList[i].taskId == id)
+            {
+                taskList[i] = new Task(taskId.value,taskName.value,startDate.value,endDate.value,status.value);
+                console.log("value updated");
+                break;
+            }
+        }
+
+        // once validation and updation is done successfully now its time to show the data
+        showData();
+
+        // we also have to change update module to add task module
+        const div = document.getElementById("actionButtons");
+        div.innerHTML = `<button id = "addTaskButton" onClick = "addTask()">Add Task</button>`;
+
+        // once the updation is input field should also be refressed
+        taskId.value = taskName.value = startDate.value = endDate.value = status.value = null;
+    }
+}
+
+// for testing
+showData(); // data should be show when user is enterd
 
 // function to add task in list
 function addTask()
 {
+    console.log("Add task Invoked");
     clearErrors();
 
     let taskId,taskName,startDate,endDate,status;
@@ -436,6 +587,9 @@ function addTask()
 // event listener to add task button
 const addTaskButton = document.getElementById("addTaskButton");
 addTaskButton.addEventListener("click",addTask);
+
+
+// 
 
 
 

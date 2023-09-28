@@ -48,11 +48,11 @@ select:hover{
     border: 2px solid rgb(30, 30, 30);
 }
 
-#addTaskButton{
+#addTaskButton, .editBtn{
     margin: 30px 15px;
     padding: 12px;
     font-size: 1em;
-    border-radius: 5px;
+    border-radius: 20px;
     background-color: rgb(224, 12, 12);
     border: none;
     color: white;
@@ -60,6 +60,12 @@ select:hover{
 }
 
 #addTaskButton:hover{
+    cursor: pointer;
+    background-color: rgb(30, 30, 30);
+    transform: scale(0.98);
+}
+
+.editBtn:hover{
     cursor: pointer;
     background-color: rgb(30, 30, 30);
     transform: scale(0.98);
