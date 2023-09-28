@@ -82,18 +82,6 @@ let taskList = [];
 taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
 taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
 taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
-taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
-taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
-taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
-taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
-taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
-taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
 
 // taskList.push(new Task(8,"Play Football","2015-03-25","2015-03-26","completed"));
 
@@ -158,26 +146,26 @@ function setSelectElements(startDate,endDate)
 
         if(cDate >= sdate && cDate <= eDate)
         {
-            let str = `<option value="PENDING">PENDING</option>
-            <option value="IN-PROGRESS">IN-PROGRESS</option>
-            <option value="CANCELLED">CANCELLED</option>
-            <option value="COMPLETED">COMPLETED</option>`
+            let str = `<option value="pending">PENDING</option>
+            <option value="in-progress">IN-PROGRESS</option>
+            <option value="cancelled">CANCELLED</option>
+            <option value="completed">COMPLETED</option>`
             select.innerHTML = str;
         }
         else if(cDate > eDate)
         {
-            let str = `<option value="PENDING">PENDING</option>
-            <option value="DUEPASSED">DUEPASSED</option>
-            <option value="CANCELLED">CANCELLED</option>
-            <option value="COMPLETED">COMPLETED</option>`
+            let str = `<option value="pending">PENDING</option>
+            <option value="due-passed">DUEPASSED</option>
+            <option value="cancelled">CANCELLED</option>
+            <option value="completed">COMPLETED</option>`
             select.innerHTML = str;
         }
         else
         {
-            let str = `<option value="PENDING">PENDING</option>
-            <option value="IN-PROGRESS">IN-PROGRESS</option>
-            <option value="CANCELLED">CANCELLED</option>
-            <option value="COMPLETED">COMPLETED</option>`
+            let str = `<option value="pending">PENDING</option>
+            <option value="in-progress">IN-PROGRESS</option>
+            <option value="cancelled">CANCELLED</option>
+            <option value="completed">COMPLETED</option>`
             select.innerHTML = str;
         }
     }
@@ -383,21 +371,27 @@ function showData()
 // function to delete a task from task List
 function deleteTask(id)
 {
-    // add dialog message here which confirms to delete a task or not
+    // dialog message here which confirms to delete a task or not
+    if(confirm("Are you sure you want to delete task ?"))
+    {
+        // filter method to filter the task list array
+        taskList = taskList.filter((task) => {
+            return task.taskId != id;
+        })
 
-    // filter method to filter the task list array
-    taskList = taskList.filter((task) => {
-        return task.taskId != id;
-    })
-
-    console.log(taskList);
-    showData();
+        console.log(taskList);
+        showData();
+    }
 }
 
 // function to update/edit task
 function updateTaskUi(id)
 {
     clearErrors(); // errors will be refressed
+
+    const taskContainer = document.getElementById("addTaskContainer");
+    if(taskContainer.style.display == "none")
+        taskContainer.style.display = "flex";
 
     let taskToBeUpdated;
     taskList.forEach(task => {
@@ -461,6 +455,8 @@ function updateTaskUi(id)
     setSelectElements(startDate,endDate);
 
     // here we will change the ui to make it for update
+    const heading = document.getElementById("addTaskContainer-heading");
+    heading.innerText = "Update Task Here";
     const div = document.getElementById("actionButtons");
     div.innerHTML = `<button class = "editBtn" onClick = "updateTask(${id})">Update</button><button class = "editBtn" onClick = "cancelUpdate()">Cancel</button>`;
 }
@@ -468,6 +464,9 @@ function updateTaskUi(id)
 // This function will be invoked when update is cancelled
 function cancelUpdate()
 {
+    const heading = document.getElementById("addTaskContainer-heading");
+    heading.innerText = "Add Task Here";
+
     const div = document.getElementById("actionButtons");
     div.innerHTML = `<button id = "addTaskButton" onClick = "addTask()">Add Task</button>`;
 
@@ -541,11 +540,16 @@ function updateTask(id)
         showData();
 
         // we also have to change update module to add task module
+        const heading = document.getElementById("addTaskContainer-heading");
+        heading.innerText = "Add Task Here";
         const div = document.getElementById("actionButtons");
         div.innerHTML = `<button id = "addTaskButton" onClick = "addTask()">Add Task</button>`;
 
         // once the updation is input field should also be refressed
         taskId.value = taskName.value = startDate.value = endDate.value = status.value = null;
+
+        // Invoking alert box to tell user that row is updated
+        alert("Task updated successfully");
     }
 }
 

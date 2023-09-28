@@ -39,14 +39,18 @@ header{
 
 /* CSS FOR ADD TASK SECTION */
 #addTaskContainer{
-    display: flex;
     flex-direction: column;
-    justify-content: center;
     width: 23%;
     min-width: 350px;
     height: 100vh;
     background-color: white;
     box-shadow: 1px 1px 3px;
+    overflow-y: auto;
+}
+
+#addTaskContainer-heading{
+    margin: 35px 15px 0px 15px;
+    font-size: 1.5em;
 }
 
 input,select{
@@ -66,7 +70,7 @@ select:hover{
 }
 
 #addTaskButton, .editBtn{
-    margin: 30px 15px;
+    margin: 20px 15px;
     padding: 12px;
     font-size: 1em;
     border-radius: 20px;
@@ -109,10 +113,11 @@ label{
 
 /* CSS FOR TITLE OF APP */
 #tableContainer{
-    width: 77%;
+    width: 100%;
+    /* min-width: 800px; */
     height: 100vh;
     background-color: #f6f5f5cc;
-    overflow-y: scroll;
+    overflow: auto;
 }
 
 #header {
@@ -125,7 +130,7 @@ label{
 
 /* CSS FOR SHOW TABLE SECTION */
 #taskTable{
-    width: 96%;
+    width: 97%;
     margin: 20px 20px 100px 20px;
     background-color: white;
     box-shadow: 1px 1px 3px;
