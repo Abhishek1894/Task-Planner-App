@@ -210,7 +210,7 @@ function checkTaskId(taskId)
 {
     if(taskId.value in idRecord)
     {
-        setIdError("Entered Task ID is alerady used");
+        setIdError("Entered Task ID is already used");
         return false;
     }
 
