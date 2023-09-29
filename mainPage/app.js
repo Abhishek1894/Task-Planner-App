@@ -210,7 +210,8 @@ function checkEmptyField(taskId,taskName,startDate,endDate,status)
     return flag;
 }
 
-// 2. function for checking taskID (once a id is used it cannot be used)
+
+// 2. function for checking taskID (once a id is used it cannot be used
 function checkTaskId(taskId)
 {
     if(taskId.value in idRecord)
@@ -218,7 +219,7 @@ function checkTaskId(taskId)
         setIdError("Entered Task ID is alerady used");
         return false;
     }
-
+    
     return true;
 }
 
@@ -371,6 +372,7 @@ function showData()
 // function to delete a task from task List
 function deleteTask(id)
 {
+    console.log("Delete Task Invoked for",id);
     // dialog message here which confirms to delete a task or not
     if(confirm("Are you sure you want to delete task ?"))
     {
