@@ -1,4 +1,4 @@
-// global hash set to maintain id's
+// global object to maintain id's
 const idRecord = {};
 
 // for testing
@@ -78,12 +78,6 @@ class Task
 
 // array to instances/objects of Task class
 let taskList = [];
-
-// taskList.push(new Task(1,"Play Basketball","2015-03-25","2015-03-26","completed"));
-// taskList.push(new Task(2,"Play Football","2015-11-25","2015-12-26","completed"));
-// taskList.push(new Task(3,"Play Basketball","2015-03-25","2015-03-26","pending"));
-
-// taskList.push(new Task(8,"Play Football","2015-03-25","2015-03-26","completed"));
 
 console.log(taskList);
 
@@ -219,7 +213,7 @@ function checkTaskId(taskId)
         setIdError("Entered Task ID is alerady used");
         return false;
     }
-    
+
     return true;
 }
 
@@ -452,7 +446,7 @@ function updateTaskUi(id)
     taskId.value = taskToBeUpdated.taskId;
     taskName.value = taskToBeUpdated.taskName;
 
-    status.value = taskToBeUpdated.status.toUpperCase();
+    status.value = taskToBeUpdated.status;
 
     setSelectElements(startDate,endDate);
 
@@ -556,7 +550,7 @@ function updateTask(id)
 }
 
 // for testing
-showData(); // data should be show when user is enterd
+showData(); // data should be show when user is enterd for first time
 
 // function to add task in list
 function addTask()
@@ -609,6 +603,7 @@ addTaskButton.addEventListener("click",addTask);
 // event listner to display or close
 const dashButton = document.querySelector(".dashButton");
 
+// button to close or open the side bar of add task
 dashButton.addEventListener("click",sideBar);
 
 function sideBar()
@@ -620,54 +615,3 @@ function sideBar()
     else
         element.style.display = "flex";
 }
-
-// 
-
-
-
-// testing code for dashboard
-// const b = document.getElementById("dash");
-// b.addEventListener("click",()=> {
-//     const container = document.getElementById("addTaskContainer");
-//     console.log(container);
-
-//     if(container.style.display != "none")
-//         container.style.display = "none";
-//     else
-//         container.style.display = "flex";
-// })
-
-// Testing code
-// addTask(1,"Play Basketball","2015-03-25","2015-03-26","pending");
-// addTask(2,"Play Football","2015-03-25","2015-03-26","completed");
-
-// console.log(taskList);
-// console.log(idRecord);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const element = document.getElementById("date");
-// const button = document.querySelector("#send");
-// console.log(element);
-// console.log(button);
-
-// let date;
-
-// button.addEventListener("click",()=>
-// {
-//     date = new Date(element.value);
-//     console.log(date.getDate(),date.getMonth(),date.getFullYear());
-// });
