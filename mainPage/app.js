@@ -301,6 +301,8 @@ function validation(taskId,taskName,startDate,endDate,status)
     checkEmptyField(taskId,taskName,startDate,endDate,status);
     checkTaskId(taskId);
     checkTaskName(taskName);
+    checkStartDate();
+    checkEndDate();
 
     const errors = document.getElementsByClassName("error");
 
@@ -309,7 +311,10 @@ function validation(taskId,taskName,startDate,endDate,status)
     for(let i = 0; i < errors.length; i++)
     {
         if(errors[i].innerText != "")
+        {
+            console.log("validation");
             flag = false;
+        }
     
     }
 
@@ -494,6 +499,10 @@ function updateTask(id)
     // validation of task name
     checkTaskName(taskName);
 
+    checkStartDate();
+
+    checkEndDate();
+
     // validation of taskId
     if(id != taskId.value)
     {
@@ -606,8 +615,7 @@ const dashButton = document.querySelector(".dashButton");
 // button to close or open the side bar of add task
 dashButton.addEventListener("click",sideBar);
 
-function sideBar()
-{
+function sideBar(){
     const element = document.getElementById("addTaskContainer");
     
     if(element.style.display == "flex")
@@ -615,3 +623,5 @@ function sideBar()
     else
         element.style.display = "flex";
 }
+
+
