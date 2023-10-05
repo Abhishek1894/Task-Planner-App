@@ -512,10 +512,6 @@ function updateTask(id)
     // validation of task name
     checkTaskName(taskName);
 
-    checkStartDate();
-
-    checkEndDate();
-
     if(!endDate.value)
     {
         setEndDateError("End-date is required");
@@ -524,6 +520,19 @@ function updateTask(id)
     if(!startDate.value)
     {
         setStartDateError("Start-date is required");
+    }
+
+    let s = new Date(startDate.value);
+    let e = new Date(endDate.value);
+
+    if(endDate.value)
+    {
+        if(s >= e)
+        {
+            setStartDateError("Start-Date must be less than End-date");
+            setEndDateError("");
+            return;
+        }
     }
 
     // validation of taskId
