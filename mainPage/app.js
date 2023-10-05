@@ -655,3 +655,133 @@ function sideBar(){
 }
 
 
+
+
+let filter = [];
+// code for filter;
+
+function filterByName(name)
+{
+    filter = taskList.filter(element => {
+        return element.taskName.toLowerCase() === name.toLowerCase();
+    });
+
+    console.log("filter invoked");
+    console.log(filter);
+}
+
+function filterById(id)
+{
+    filter = taskList.filter(element => {
+        return element.taskId == id;
+    });
+
+    console.log(filter);
+}
+
+function showFilterData()
+{
+    const tbody = document.getElementById("table-body");
+
+    // to clear html content before displaying (if not don same values will be displayed)
+    tbody.innerHTML = "";
+    
+    let taskList = filter;
+
+    for(let i = 0; i < taskList.length; i++)
+    {
+        const row = document.createElement("tr");
+        
+        let cell = document.createElement("td");
+        let cellText = document.createTextNode(`${taskList[i].taskId}`);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        cell = document.createElement("td");
+        cellText = document.createTextNode(`${taskList[i].taskName}`);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        cell = document.createElement("td");
+        cellText = document.createTextNode(`${taskList[i].startDate}`);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        cell = document.createElement("td");
+        cellText = document.createTextNode(`${taskList[i].endDate}`);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        cell = document.createElement("td");
+        cellText = document.createTextNode(`${taskList[i].status}`);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        cell = document.createElement("td");
+        cell.innerHTML = `<button class = "fa fa-edit" style="width:25px; height:25px;" onclick="updateTaskUi(${taskList[i].taskId})"></button> <button style="width:25px; height:25px;" class = "fa fa-trash" onclick="deleteTask(${taskList[i].taskId})"></button>`;
+        row.appendChild(cell);
+
+        tbody.appendChild(row);
+    }
+}
+
+function isValidNumber(str) {
+    // Use the unary plus operator to convert the string to a number
+    // and check if it's a finite number (not NaN or Infinity)
+    return !isNaN(+str) && isFinite(+str);
+}
+
+function filterData()
+{
+    console.log("filter data invoked")
+    const input = document.getElementById("filter-input");
+
+    let inputed = input.value;
+
+    if(isValidNumber(inputed))
+    {
+        console.log("searching for number")
+        filterById(inputed);
+        console.log(filter);
+        showFilterData();
+    }
+    else if(inputed == "pending" || inputed == "in-progress" || inputed == "due-passed" || inputed == "completed" || inputed == "cancelled")
+    {
+        console.log("searching for status");
+        filterByStatus(inputed);
+        showFilterData();
+    }
+}
+
+const filterButton = document.getElementById("filter-button");
+
+filterButton.addEventListener("click",filterData);
+
+console.log(filterButton);
+
+
+function filterByName(name)
+{
+    filter = taskList.filter(element => {
+        return element.taskName.toLowerCase().includes(name.toLowerCase());
+    });
+}
+
+function filterById(id)
+{
+    filter = taskList.filter(element => {
+        return element.taskId == id;
+    });
+}
+
+function filterByStatus(taskStatus)
+{
+    filter = taskList.filter(element => {
+        return element.status == taskStatus;
+    });
+}
+
+
+
+const removeFilter = document.getElementById("remove-filter");
+removeFilter.addEventListener("click",showData);

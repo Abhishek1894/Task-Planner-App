@@ -25,6 +25,7 @@ header{
 .dashButton{
     width: 40px; 
     height: 40px; 
+    margin: 0px 10px;
     background-color: #28282B; 
     color: white;
     border: none;
@@ -34,6 +35,42 @@ header{
 .dashButton:hover{
     background-color: white;
     color: black;
+}
+
+/* css for filter tasks */
+#filter-element{
+    position: absolute;
+    right: 15px;
+}
+
+#filter-input{
+    font-size: 15px;
+    height: 35px;
+    border: none;
+    border-radius: 20px;
+    text-align: center;
+}
+
+#filter-button{
+    font-size: 15px;
+    width: 100px;
+    height: 35px;
+    border-radius: 20px;
+    font-weight: bold;
+    background-color: rgb(13, 183, 235);
+    color: white;
+    border: none;
+}
+
+#remove-filter{
+    font-size: 15px;
+    height: 35px;
+    width: 35px;
+    border-radius: 20px;
+    font-weight: bold;
+    background-color: rgb(224, 12, 12);
+    color: white;
+    border: none;
 }
 
 /* CSS FOR ADD TASK SECTION */
