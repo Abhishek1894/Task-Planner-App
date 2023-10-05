@@ -301,8 +301,21 @@ function validation(taskId,taskName,startDate,endDate,status)
     checkEmptyField(taskId,taskName,startDate,endDate,status);
     checkTaskId(taskId);
     checkTaskName(taskName);
-    checkStartDate();
-    checkEndDate();
+
+    // validation for date when add button is clicked
+    let s = new Date(startDate.value);
+    let e = new Date(endDate.value);
+
+    if(endDate.value)
+    {
+        if(s >= e)
+        {
+            setStartDateError("Start-Date must be less than End-date");
+            setEndDateError("");
+            return;
+        }
+    }
+
 
     const errors = document.getElementsByClassName("error");
 
@@ -503,6 +516,16 @@ function updateTask(id)
 
     checkEndDate();
 
+    if(!endDate.value)
+    {
+        setEndDateError("End-date is required");
+    }
+
+    if(!startDate.value)
+    {
+        setStartDateError("Start-date is required");
+    }
+
     // validation of taskId
     if(id != taskId.value)
     {
@@ -574,8 +597,6 @@ function addTask()
     startDate = document.getElementById("start-date");
     endDate = document.getElementById("end-date");
     status = document.getElementById("status");
-
-    
 
     // check validations
     // if validation function returns true following code will be invoked else not
