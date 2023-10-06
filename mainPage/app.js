@@ -34,12 +34,12 @@ class Task
 
     get startDate()
     {
-        return `${this._startDate.getDate()}/${this._startDate.getMonth()}/${this._startDate.getFullYear()}`;
+        return `${this._startDate.getDate()}/${this._startDate.getMonth() + 1}/${this._startDate.getFullYear()}`;
     }
 
     get endDate()
     {
-        return `${this._endDate.getDate()}/${this._endDate.getMonth()}/${this._endDate.getFullYear()}`;
+        return `${this._endDate.getDate()}/${this._endDate.getMonth() + 1}/${this._endDate.getFullYear()}`;
     }
 
     get status()
@@ -78,6 +78,14 @@ class Task
 
 // array to instances/objects of Task class
 let taskList = [];
+
+taskList.push(new Task("1","Complete Homework","2023-10-01","2023-10-07","completed"));
+taskList.push(new Task("2","Complete Login Page","2023-10-01","2023-10-07","pending"));
+taskList.push(new Task("3","Complete Fetch Api task","2023-10-01","2023-10-07","pending"));
+taskList.push(new Task("4","Complete Login Page with Validation","2023-10-01","2023-10-07","completed"));
+taskList.push(new Task("5","Complete Operating System","2023-10-01","2023-10-07","cancelled"));
+taskList.push(new Task("6","Complete JavaScript","2023-10-01","2023-10-07","completed"));
+taskList.push(new Task("7","Complete Python","2023-10-01","2023-10-07","in-progress"));
 
 console.log(taskList);
 
@@ -148,6 +156,8 @@ function setSelectElements(startDate,endDate)
         }
         else if(cDate > eDate)
         {
+            console.log("This is invoked");
+            console.log("cdate :",cDate,"endate:",eDate);
             let str = `<option value="pending">PENDING</option>
             <option value="due-passed">DUEPASSED</option>
             <option value="cancelled">CANCELLED</option>
@@ -290,10 +300,12 @@ function checkEndDate()
 // validation for start date
 const startDate = document.getElementById("start-date");
 startDate.addEventListener("change",checkStartDate);
+startDate.addEventListener("change",disableEndDate); // event listner for disabling dates samller than start date
 
 // validation for end date
 const endDate = document.getElementById("end-date");
 endDate.addEventListener("change",checkEndDate);
+endDate.addEventListener("change",disableStartDate);
 
 // Complete validation function which returns true if all validatins are cleared else return false;
 function validation(taskId,taskName,startDate,endDate,status)
@@ -435,10 +447,11 @@ function updateTaskUi(id)
     else
         date = t._startDate.getDate();
 
-    if(`${t._startDate.getMonth()}`.length === 1)
-        month = "0"+t._startDate.getMonth();
+    sm = t._startDate.getMonth() + 1;
+    if(`${sm}`.length === 1)
+        month = "0"+sm;
     else
-        month = t._startDate.getMonth();
+        month = sm;
 
     year = t._startDate.getFullYear();
     let s = `${year}-${month}-${date}`;
@@ -451,10 +464,11 @@ function updateTaskUi(id)
     else
         date = t._endDate.getDate();
 
-    if(`${t._endDate.getMonth()}`.length === 1)
-        month = "0"+t._endDate.getMonth();
+    em = t._endDate.getMonth() + 1;
+    if(`${em}`.length === 1)
+        month = "0"+em;
     else
-        month = t._endDate.getMonth();
+        month = em;
 
     year = t._startDate.getFullYear();
     let e = `${year}-${month}-${date}`;
@@ -660,25 +674,7 @@ function sideBar(){
 let filter = [];
 // code for filter;
 
-function filterByName(name)
-{
-    filter = taskList.filter(element => {
-        return element.taskName.toLowerCase() === name.toLowerCase();
-    });
-
-    console.log("filter invoked");
-    console.log(filter);
-}
-
-function filterById(id)
-{
-    filter = taskList.filter(element => {
-        return element.taskId == id;
-    });
-
-    console.log(filter);
-}
-
+// function to show the filtered data;
 function showFilterData()
 {
     const tbody = document.getElementById("table-body");
@@ -725,63 +721,140 @@ function showFilterData()
     }
 }
 
-function isValidNumber(str) {
-    // Use the unary plus operator to convert the string to a number
-    // and check if it's a finite number (not NaN or Infinity)
-    return !isNaN(+str) && isFinite(+str);
-}
 
+// function to filter data
 function filterData()
 {
     console.log("filter data invoked")
     const input = document.getElementById("filter-input");
 
-    let inputed = input.value;
+    let value = input.value;
+    filter =  taskList.filter((task) => 
+    {
+        const taskData = `${task.taskId} ${task.taskName} ${task.status}`;
+        const lowerValue = value.toLowerCase();
+        
+        // Check if the input value is included in any part of the task data
+        if (taskData.toLowerCase().includes(lowerValue)) 
+        {
+            return true;
+        }
 
-    if(isValidNumber(inputed))
-    {
-        console.log("searching for number")
-        filterById(inputed);
-        console.log(filter);
-        showFilterData();
-    }
-    else if(inputed == "pending" || inputed == "in-progress" || inputed == "due-passed" || inputed == "completed" || inputed == "cancelled")
-    {
-        console.log("searching for status");
-        filterByStatus(inputed);
-        showFilterData();
-    }
+        // check if the input value matches to any date or not
+        value = value.replaceAll('-','/');
+        console.log(value);
+        if(value == task.startDate || value == task.endDate)
+        {
+            return true;
+        }
+
+        return false;
+    });
+
+    showFilterData();
 }
 
+// button to filter data and show it on table
 const filterButton = document.getElementById("filter-button");
-
 filterButton.addEventListener("click",filterData);
 
-console.log(filterButton);
 
-
-function filterByName(name)
-{
-    filter = taskList.filter(element => {
-        return element.taskName.toLowerCase().includes(name.toLowerCase());
-    });
-}
-
-function filterById(id)
-{
-    filter = taskList.filter(element => {
-        return element.taskId == id;
-    });
-}
-
-function filterByStatus(taskStatus)
-{
-    filter = taskList.filter(element => {
-        return element.status == taskStatus;
-    });
-}
-
-
-
+// Adding event listner for removing the filter and showing original data
 const removeFilter = document.getElementById("remove-filter");
-removeFilter.addEventListener("click",showData);
+removeFilter.addEventListener("click",()=>{
+    const input = document.getElementById("filter-input");
+    input.value = null;
+    showData();
+});
+
+// function to disable certain values of end date
+function disableEndDate()
+{
+    const startDate = document.getElementById("start-date");
+    let date = new Date(startDate.value);
+    date.setDate(date.getDate() + 1);
+
+    let month = String(date.getMonth() + 1).padStart(2, '0');
+    let dat = String(date.getDate()).padStart(2,'0');
+
+    let str = `${date.getFullYear()}-${month}-${dat}`;
+    const endDate = document.getElementById("end-date");
+    endDate.setAttribute("min",str);
+}
+
+function disableStartDate()
+{
+    const endDate = document.getElementById("end-date");
+
+    let date = new Date(endDate.value);
+    date.setDate(date.getDate() - 1);
+
+    let month = String(date.getMonth() + 1).padStart(2, '0');
+    let dat = String(date.getDate()).padStart(2,'0');
+
+    let str = `${date.getFullYear()}-${month}-${dat}`;
+    const startDate = document.getElementById("start-date");
+
+    startDate.setAttribute("max",str);
+}
+
+
+
+
+// below is testing code
+
+// function isValidNumber(str) {
+    //     // Use the unary plus operator to convert the string to a number
+    //     // and check if it's a finite number (not NaN or Infinity)
+    //     return !isNaN(+str) && isFinite(+str);
+    // }
+    
+// function filterByName(name)
+// {
+//     filter = taskList.filter(element => {
+//         return element.taskName.toLowerCase().includes(name.toLowerCase());
+//     });
+// }
+
+// function filterById(id)
+// {
+//     filter = taskList.filter(element => {
+//         return element.taskId == id;
+//     });
+// }
+
+// function filterByStatus(taskStatus)
+// {
+//     filter = taskList.filter(element => {
+//         return element.status == taskStatus;
+//     });
+// }
+
+
+
+
+
+// let inputed = input.value;
+
+    // if(isValidNumber(inputed))
+    // {
+    //     console.log("searching for number")
+    //     filterById(inputed);
+    //     console.log(filter);
+    //     showFilterData();
+    // }
+    // else if(inputed == "pending" || inputed == "in-progress" || inputed == "due-passed" || inputed == "completed" || inputed == "cancelled")
+    // {
+    //     console.log("searching for status");
+    //     filterByStatus(inputed);
+    //     showFilterData();
+    // }
+    // else if(inputed.includes("/") || inputed.includes("-"))
+    // {
+
+    // }
+    // else
+    // {
+    //     filterByName(inputed);
+    //     showFilterData();
+    // }
