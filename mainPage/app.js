@@ -79,13 +79,14 @@ class Task
 // array to instances/objects of Task class
 let taskList = [];
 
-taskList.push(new Task("1","Complete Homework","2023-10-01","2023-10-07","completed"));
-taskList.push(new Task("2","Complete Login Page","2023-10-01","2023-10-07","pending"));
-taskList.push(new Task("3","Complete Fetch Api task","2023-10-01","2023-10-07","pending"));
-taskList.push(new Task("4","Complete Login Page with Validation","2023-10-01","2023-10-07","completed"));
-taskList.push(new Task("5","Complete Operating System","2023-10-01","2023-10-07","cancelled"));
-taskList.push(new Task("6","Complete JavaScript","2023-10-01","2023-10-07","completed"));
-taskList.push(new Task("7","Complete Python","2023-10-01","2023-10-07","in-progress"));
+// data for testing
+// taskList.push(new Task("1","Complete Homework","2023-10-01","2023-10-07","completed"));
+// taskList.push(new Task("2","Complete Login Page","2023-10-01","2023-10-07","pending"));
+// taskList.push(new Task("3","Complete Fetch Api task","2023-10-01","2023-10-07","pending"));
+// taskList.push(new Task("4","Complete Login Page with Validation","2023-10-01","2023-10-07","completed"));
+// taskList.push(new Task("5","Complete Operating System","2023-10-01","2023-10-07","cancelled"));
+// taskList.push(new Task("6","Complete JavaScript","2023-10-01","2023-10-07","completed"));
+// taskList.push(new Task("7","Complete Python","2023-10-01","2023-10-07","in-progress"));
 
 console.log(taskList);
 
@@ -396,6 +397,9 @@ function showData()
 // function to delete a task from task List
 function deleteTask(id)
 {
+    // when delete button is clicked there should not be update task ui
+    cancelUpdate();
+    
     console.log("Delete Task Invoked for",id);
     // dialog message here which confirms to delete a task or not
     if(confirm("Are you sure you want to delete task ?"))
@@ -506,6 +510,10 @@ function cancelUpdate()
     const status = document.getElementById("status");
     taskId.value = taskName.value = startDate.value = endDate.value = status.value = null;
 
+    // removing min max attribute of start date and end date
+    startDate.removeAttribute("max");
+    endDate.removeAttribute("min");
+
     // Clears all errors while cancelling the update of task
     clearErrors();
 };
@@ -583,6 +591,12 @@ function updateTask(id)
             {
                 taskList[i] = new Task(taskId.value,taskName.value,startDate.value,endDate.value,status.value);
                 console.log("value updated");
+                // Invoking alert box to tell user that row is updated
+                alert("Task updated successfully");
+                // removing min max attribute of start date and end date
+                startDate.removeAttribute("max");
+                endDate.removeAttribute("min");
+
                 break;
             }
         }
@@ -598,9 +612,6 @@ function updateTask(id)
 
         // once the updation is input field should also be refressed
         taskId.value = taskName.value = startDate.value = endDate.value = status.value = null;
-
-        // Invoking alert box to tell user that row is updated
-        alert("Task updated successfully");
     }
 }
 
@@ -639,7 +650,10 @@ function addTask()
 
         // reseting input boxes
         taskId.value = taskName.value = startDate.value = endDate.value = status.value = null;
-
+        
+        // removing min max attribute of start date and end date
+        startDate.removeAttribute("max");
+        endDate.removeAttribute("min");
         // once the task is added it must be displayed in table so show data is used
         showData();
     }
