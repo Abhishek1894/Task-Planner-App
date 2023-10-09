@@ -150,7 +150,7 @@ function setSelectElements(startDate,endDate)
         if(cDate >= sdate && cDate <= eDate)
         {
             let str = `<option value="pending">PENDING</option>
-            <option value="in-progress">IN-PROGRESS</option>
+            <option value="inprogress">IN-PROGRESS</option>
             <option value="cancelled">CANCELLED</option>
             <option value="completed">COMPLETED</option>`
             select.innerHTML = str;
@@ -160,7 +160,7 @@ function setSelectElements(startDate,endDate)
             console.log("This is invoked");
             console.log("cdate :",cDate,"endate:",eDate);
             let str = `<option value="pending">PENDING</option>
-            <option value="due-passed">DUEPASSED</option>
+            <option value="duepassed">DUEPASSED</option>
             <option value="cancelled">CANCELLED</option>
             <option value="completed">COMPLETED</option>`
             select.innerHTML = str;
@@ -168,7 +168,7 @@ function setSelectElements(startDate,endDate)
         else
         {
             let str = `<option value="pending">PENDING</option>
-            <option value="in-progress">IN-PROGRESS</option>
+            <option value="inprogress">IN-PROGRESS</option>
             <option value="cancelled">CANCELLED</option>
             <option value="completed">COMPLETED</option>`
             select.innerHTML = str;
@@ -484,7 +484,12 @@ function updateTaskUi(id)
 
     status.value = taskToBeUpdated.status;
 
+    // selects status elements based on start date and end data
     setSelectElements(startDate,endDate);
+
+    // apply min max to start date and end date based on start date and end date
+    disableEndDate();
+    disableStartDate();
 
     // here we will change the ui to make it for update
     const heading = document.getElementById("addTaskContainer-heading");
@@ -743,6 +748,13 @@ function filterData()
     const input = document.getElementById("filter-input");
 
     let value = input.value;
+
+    if(!value)
+    {
+        alert("Enter some value in filter input box");
+        return;
+    }
+
     filter =  taskList.filter((task) => 
     {
         const taskData = `${task.taskId} ${task.taskName} ${task.status}`;
@@ -755,11 +767,13 @@ function filterData()
         }
 
         // check if the input value matches to any date or not
-        value = value.replaceAll('-','/');
-        console.log(value);
-        if(value == task.startDate || value == task.endDate)
+        if(value.includes("/") || value.includes("-"))
         {
-            return true;
+            value = value.replaceAll('-','/');
+            if(task.startDate.includes(value) || task.endDate.includes(value))
+            {
+                return true;
+            }
         }
 
         return false;
